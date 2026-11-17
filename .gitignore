@@ -1,0 +1,34 @@
+# 本地配置与状态（含 token / 账号 / 运行态）
+qq-bridge/config.json
+qq-bridge/state.json
+*.pid
+*.flag
+
+# 日志
+*.log
+logs/
+
+# 媒体与产物
+media/
+cache/
+out/
+*.wav
+*.mp3
+*.mp4
+*.png
+*.jpg
+*.safetensors
+*.pt
+*.ckpt
+
+# 依赖
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 系统
+Thumbs.db
+desktop.ini
+.DS_Store

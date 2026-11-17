@@ -1,0 +1,16 @@
+# dsh-plugin-stems 的挂载声明。
+# id 全局唯一；name 是包名，DSH 会解析到它的 main（lib/index.js）。
+# 下面这些 config 是本机的默认值，换机器就改这里。
+- insert:
+    - id: dsh-plugin-stems
+      name: 'dsh-plugin-stems'
+      config:
+        pythonPath: 'D:\dsh 大肥鱼\voice\tts\venv\Scripts\python.exe'
+        ffmpegPath: 'D:\dsh 大肥鱼\voice\bin\ffmpeg.exe'
+        torchHome: 'D:\dsh 大肥鱼\voice\cache'
+        demucsRepo: 'D:\dsh 大肥鱼\voice\demucs-repo'
+        workRoot: 'D:\dsh 大肥鱼\stems'
+        baseDir: 'D:\dsh 大肥鱼'
+        device: auto
+        defaultModel: htdemucs
+        segmentsModel: htdemucs_6s

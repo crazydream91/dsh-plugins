@@ -1,0 +1,29 @@
+{
+  "name": "dsh-plugin-stems",
+  "version": "0.1.0",
+  "description": "把视频/音频分离成人声、伴奏和逐件乐器（ffmpeg 编排 + Demucs 分离）",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "py",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "keywords": [
+    "dsh-plugin",
+    "audio",
+    "demucs",
+    "stems",
+    "vocal-removal"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "engines": {
+      "dsh": ">=0.2.0-rc.2"
+    }
+  }
+}

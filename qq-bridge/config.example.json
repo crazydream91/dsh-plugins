@@ -1,0 +1,25 @@
+{
+  "onebot": { "wsUrl": "ws://127.0.0.1:3001", "accessToken": "<你的 OneBot token>" },
+  "allow": { "users": [10001], "groups": [200000001] },
+  "owner": 10001,
+  "groupTrigger": "at",
+  "groupModes": { "200000001": "at" },
+  "quiet": { "start": "21:00", "end": "08:00", "groups": true, "private": false },
+  "behavior": { "ack": false, "ackDelayMs": 8000, "groupFreeCooldownSec": 90 },
+  "proactive": {
+    "enabled": true, "morning": "08:10", "goodnight": "20:45",
+    "classReminder": { "enabled": true, "minutesBefore": 25 },
+    "drive": { "enabled": true, "threshold": 0.55, "minGapMinutes": 45, "dailyCap": 10 }
+  },
+  "backlog": { "enabled": true, "windowHours": 5, "count": 50 },
+  "dsh": {
+    "exe": "<DeepSeek Harness.exe 的路径>",
+    "cliJs": "<.../dsh-desktop-host/lib/cli.js 的路径>",
+    "patch": "./dsh-overlay.yml",
+    "cwd": ".",
+    "permissionMode": "read-only",
+    "ownerPermissionMode": "danger-full-access"
+  },
+  "limits": { "maxChars": 1500, "timeoutMs": 300000, "perChatQueue": 3 },
+  "shell": { "enabled": true, "timeoutMs": 120000, "maxOutput": 1200 }
+}

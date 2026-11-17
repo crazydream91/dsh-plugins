@@ -1,0 +1,7 @@
+# dsh-plugin-hello 的挂载声明：往配置树里插一行
+# id 必须全局唯一，一般用包名；name 写包名，DSH 会解析到它的 main
+- insert:
+    - id: dsh-plugin-hello
+      name: 'dsh-plugin-hello'
+      config:
+        greeting: 你好
