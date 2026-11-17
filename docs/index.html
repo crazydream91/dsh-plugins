@@ -25,6 +25,7 @@
   .meta { margin-top:18px; font-size:13px; color:#9fb0cc; }
   main { padding:36px 24px 64px; }
   h2 { font-size:20px; margin:0 0 18px; }
+  h2.gap { margin-top:40px; }
   .grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
   .card {
     background:var(--card); border:1px solid var(--line); border-radius:14px;
@@ -42,6 +43,7 @@
   .tag { font-size:12px; color:var(--blue); background:#eef3ff; border-radius:6px; padding:2px 8px; }
   .link { font-size:13.5px; color:var(--blue); text-decoration:none; font-weight:500; }
   .link:hover { text-decoration:underline; }
+  .card.score h3 { margin-bottom:4px; }
   footer { border-top:1px solid var(--line); padding:22px 24px 40px; color:var(--grey); font-size:13px; }
   code { background:#eef1f6; padding:1px 6px; border-radius:5px; font-size:12.5px; }
 </style>
@@ -51,12 +53,12 @@
   <div class="wrap">
     <h1>dsh-plugins</h1>
     <p>给 DeepSeek Harness 加能力的一组自建插件与工具链。全部本地运行，不依赖云端服务。</p>
-    <div class="meta">更新于 2026-11-17 · 插件 3 个 + 脚本集 3 套</div>
+    <div class="meta">更新于 2026-11-17 · 插件 3 个 · 脚本集 3 套 · 曲谱 1 份</div>
   </div>
 </header>
 <main>
   <div class="wrap">
-    <h2>插件</h2>
+    <h2>插件与工具链</h2>
     <div class="grid">
       <article class="card">
         <div class="row">
@@ -117,6 +119,15 @@
         <p class="desc">SDXL 本地文生图，含显存不足的分块放大与离线加载处理。</p>
         <div class="tags"><span class="tag">diffusers</span><span class="tag">SDXL</span><span class="tag">ESRGAN</span></div>
         <a class="link" href="../gen/">查看源码 →</a>
+      </article>
+    </div>
+    <h2 class="gap">曲谱（制谱师生成）</h2>
+    <div class="grid">
+      <article class="card score">
+        <h3>剩下的盛夏 - TFBOYS / 嘻游记</h3>
+        <p class="sub">shengxia7</p>
+        <p class="desc">音符轨：人声</p>
+        <a class="link" href="scores/shengxia7/">打开曲谱 →</a>
       </article>
     </div>
   </div>

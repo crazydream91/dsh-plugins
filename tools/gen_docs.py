@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""扫描 plugins/*/package.json，生成 docs/index.html（GitHub Pages 首页）。
+"""扫描 plugins/*/package.json 与 docs/scores/*/meta.json，生成 docs/index.html。
 
 用法:
     python tools/gen_docs.py
@@ -16,6 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PLUGINS = ROOT / "plugins"
+SCORES = ROOT / "docs" / "scores"
 OUT = ROOT / "docs" / "index.html"
 
 # 手工维护的一句话介绍：包名 -> (中文名, 说明, 标签)
@@ -70,12 +71,7 @@ def read_plugins() -> list[dict]:
             continue
         name = pkg.get("name") or pkg_path.parent.name
         cn, desc, tags = BLURB.get(
-            name,
-            (
-                pkg_path.parent.name,
-                pkg.get("description") or "（暂无说明）",
-                [],
-            ),
+            name, (pkg_path.parent.name, pkg.get("description") or "（暂无说明）", [])
         )
         items.append(
             {
@@ -88,6 +84,27 @@ def read_plugins() -> list[dict]:
             }
         )
     return items
+
+
+def read_scores() -> list[dict]:
+    """每份已发布的曲谱：docs/scores/<slug>/meta.json。"""
+    out = []
+    if not SCORES.is_dir():
+        return out
+    for meta_path in sorted(SCORES.glob("*/meta.json")):
+        try:
+            m = json.loads(meta_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        out.append(
+            {
+                "slug": meta_path.parent.name,
+                "title": m.get("title") or meta_path.parent.name,
+                "createdAt": m.get("createdAt") or "",
+                "tracks": m.get("tracks") or [],
+            }
+        )
+    return out
 
 
 def card(title: str, sub: str, desc: str, tags: list[str], right: str, link: str) -> str:
@@ -104,8 +121,20 @@ def card(title: str, sub: str, desc: str, tags: list[str], right: str, link: str
       </article>"""
 
 
+def score_card(s: dict) -> str:
+    tracks = "、".join(s["tracks"]) or "—"
+    return f"""      <article class="card score">
+        <h3>{html.escape(s["title"])}</h3>
+        <p class="sub">{html.escape(s["slug"])}</p>
+        <p class="desc">音符轨：{html.escape(tracks)}</p>
+        <a class="link" href="scores/{html.escape(s["slug"])}/">打开曲谱 →</a>
+      </article>"""
+
+
 def main() -> None:
     plugins = read_plugins()
+    scores = read_scores()
+
     cards = [
         card(p["cn"], p["name"], p["desc"], p["tags"], f"v{p['version']}", f"../plugins/{p['folder']}/")
         for p in plugins
@@ -113,7 +142,17 @@ def main() -> None:
     cards += [
         card(cn, folder, desc, tags, "脚本集", f"../{folder}/") for cn, folder, desc, tags in EXTRA
     ]
+
+    score_section = ""
+    if scores:
+        score_section = f"""    <h2 class="gap">曲谱（制谱师生成）</h2>
+    <div class="grid">
+{chr(10).join(score_card(s) for s in scores)}
+    </div>
+"""
+
     today = date.today().isoformat()
+    score_meta = f" · 曲谱 {len(scores)} 份" if scores else ""
 
     doc = f"""<!doctype html>
 <html lang="zh-CN">
@@ -142,6 +181,7 @@ def main() -> None:
   .meta {{ margin-top:18px; font-size:13px; color:#9fb0cc; }}
   main {{ padding:36px 24px 64px; }}
   h2 {{ font-size:20px; margin:0 0 18px; }}
+  h2.gap {{ margin-top:40px; }}
   .grid {{ display:grid; gap:18px; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }}
   .card {{
     background:var(--card); border:1px solid var(--line); border-radius:14px;
@@ -159,6 +199,7 @@ def main() -> None:
   .tag {{ font-size:12px; color:var(--blue); background:#eef3ff; border-radius:6px; padding:2px 8px; }}
   .link {{ font-size:13.5px; color:var(--blue); text-decoration:none; font-weight:500; }}
   .link:hover {{ text-decoration:underline; }}
+  .card.score h3 {{ margin-bottom:4px; }}
   footer {{ border-top:1px solid var(--line); padding:22px 24px 40px; color:var(--grey); font-size:13px; }}
   code {{ background:#eef1f6; padding:1px 6px; border-radius:5px; font-size:12.5px; }}
 </style>
@@ -168,16 +209,16 @@ def main() -> None:
   <div class="wrap">
     <h1>dsh-plugins</h1>
     <p>给 DeepSeek Harness 加能力的一组自建插件与工具链。全部本地运行，不依赖云端服务。</p>
-    <div class="meta">更新于 {today} · 插件 {len(plugins)} 个 + 脚本集 {len(EXTRA)} 套</div>
+    <div class="meta">更新于 {today} · 插件 {len(plugins)} 个 · 脚本集 {len(EXTRA)} 套{score_meta}</div>
   </div>
 </header>
 <main>
   <div class="wrap">
-    <h2>插件</h2>
+    <h2>插件与工具链</h2>
     <div class="grid">
 {chr(10).join(cards)}
     </div>
-  </div>
+{score_section}  </div>
 </main>
 <footer>
   <div class="wrap">
@@ -190,7 +231,7 @@ def main() -> None:
 """
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(doc, encoding="utf-8")
-    print(f"已生成 {OUT}（插件 {len(plugins)} 个）")
+    print(f"已生成 {OUT}（插件 {len(plugins)} 个，曲谱 {len(scores)} 份）")
 
 
 if __name__ == "__main__":
