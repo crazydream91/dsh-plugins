@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>dsh-plugins · DSH 插件合集</title>
+<style>
+  :root {
+    --ink:#0f172a; --grey:#5b6473; --line:#e3e7ee; --blue:#2563eb;
+    --bg:#f7f8fb; --card:#ffffff; --teal:#0f9e8e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family: "PingFang SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+    line-height:1.6;
+  }
+  header {
+    background: linear-gradient(135deg,#0f172a 0%,#1e3a5f 60%,#2563eb 100%);
+    color:#fff; padding:56px 24px 44px;
+  }
+  .wrap { max-width: 980px; margin:0 auto; }
+  header h1 { margin:0 0 8px; font-size:32px; letter-spacing:.5px; }
+  header p { margin:0; color:#c7d2e5; font-size:15px; }
+  .meta { margin-top:18px; font-size:13px; color:#9fb0cc; }
+  main { padding:36px 24px 64px; }
+  h2 { font-size:20px; margin:0 0 18px; }
+  .grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
+  .card {
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 20px 16px; display:flex; flex-direction:column;
+    box-shadow:0 1px 2px rgba(15,23,42,.04);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(15,23,42,.08); }
+  .row { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+  .card h3 { margin:0; font-size:17px; }
+  .ver { font-size:12px; color:var(--teal); background:#e7f6f4; border-radius:999px; padding:2px 10px; white-space:nowrap; }
+  .sub { margin:4px 0 8px; font-size:12.5px; color:var(--grey); font-family:ui-monospace,Consolas,monospace; }
+  .desc { margin:0 0 12px; font-size:14px; color:#33404f; flex:1; }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  .tag { font-size:12px; color:var(--blue); background:#eef3ff; border-radius:6px; padding:2px 8px; }
+  .link { font-size:13.5px; color:var(--blue); text-decoration:none; font-weight:500; }
+  .link:hover { text-decoration:underline; }
+  footer { border-top:1px solid var(--line); padding:22px 24px 40px; color:var(--grey); font-size:13px; }
+  code { background:#eef1f6; padding:1px 6px; border-radius:5px; font-size:12.5px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>dsh-plugins</h1>
+    <p>给 DeepSeek Harness 加能力的一组自建插件与工具链。全部本地运行，不依赖云端服务。</p>
+    <div class="meta">更新于 2026-11-17 · 插件 3 个 + 脚本集 3 套</div>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <h2>插件</h2>
+    <div class="grid">
+      <article class="card">
+        <div class="row">
+          <h3>最小插件模板</h3>
+          <span class="ver">v0.1.0</span>
+        </div>
+        <p class="sub">dsh-plugin-hello</p>
+        <p class="desc">一个可运行的 DSH 插件样板：注册工具、返回结构化输出，照着改就能写自己的。</p>
+        <div class="tags"><span class="tag">模板</span><span class="tag">插件开发</span></div>
+        <a class="link" href="../plugins/dsh-plugin-hello/">查看源码 →</a>
+      </article>
+      <article class="card">
+        <div class="row">
+          <h3>制谱师</h3>
+          <span class="ver">v0.1.0</span>
+        </div>
+        <p class="sub">dsh-plugin-score-smith</p>
+        <p class="desc">听一段音频，分离出各件乐器，识别音高与节奏，自动排出可编辑的曲谱：五线谱、简谱、六线谱、鼓谱都能出。</p>
+        <div class="tags"><span class="tag">音频分轨</span><span class="tag">音高识别</span><span class="tag">MusicXML</span><span class="tag">verovio 排版</span></div>
+        <a class="link" href="../plugins/dsh-plugin-score-smith/">查看源码 →</a>
+      </article>
+      <article class="card">
+        <div class="row">
+          <h3>音轨分离</h3>
+          <span class="ver">v0.1.0</span>
+        </div>
+        <p class="sub">dsh-plugin-stems</p>
+        <p class="desc">把一首歌拆成人声、鼓、贝斯、吉他、钢琴和其它六轨，也可以按需混回去。</p>
+        <div class="tags"><span class="tag">demucs</span><span class="tag">六轨分离</span><span class="tag">混音</span></div>
+        <a class="link" href="../plugins/dsh-plugin-stems/">查看源码 →</a>
+      </article>
+      <article class="card">
+        <div class="row">
+          <h3>QQ 桥接</h3>
+          <span class="ver">脚本集</span>
+        </div>
+        <p class="sub">qq-bridge</p>
+        <p class="desc">让 DSH 住进 QQ：私聊、群聊、语音、图片、视频抽帧、掉线补回、日程提醒。</p>
+        <div class="tags"><span class="tag">NapCat</span><span class="tag">OneBot</span><span class="tag">主动开口</span></div>
+        <a class="link" href="../qq-bridge/">查看源码 →</a>
+      </article>
+      <article class="card">
+        <div class="row">
+          <h3>语音克隆</h3>
+          <span class="ver">脚本集</span>
+        </div>
+        <p class="sub">voice</p>
+        <p class="desc">本地 F5-TTS 微调自己的音色，批量合成台词，接回聊天软件当语音消息发。</p>
+        <div class="tags"><span class="tag">F5-TTS</span><span class="tag">whisper</span><span class="tag">听写</span></div>
+        <a class="link" href="../voice/">查看源码 →</a>
+      </article>
+      <article class="card">
+        <div class="row">
+          <h3>本地出图</h3>
+          <span class="ver">脚本集</span>
+        </div>
+        <p class="sub">gen</p>
+        <p class="desc">SDXL 本地文生图，含显存不足的分块放大与离线加载处理。</p>
+        <div class="tags"><span class="tag">diffusers</span><span class="tag">SDXL</span><span class="tag">ESRGAN</span></div>
+        <a class="link" href="../gen/">查看源码 →</a>
+      </article>
+    </div>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    版本以各插件 <code>package.json</code> 为准，变更记录见
+    <a href="../CHANGELOG.md">CHANGELOG</a>。License: Apache-2.0。
+  </div>
+</footer>
+</body>
+</html>
