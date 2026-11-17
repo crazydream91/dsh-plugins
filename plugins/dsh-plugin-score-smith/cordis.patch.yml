@@ -1,0 +1,19 @@
+# dsh-plugin-score-smith 的挂载声明。
+# id 全局唯一；name 是包名，DSH 会解析到它的 main（lib/index.js）。
+# 下面这些 config 是本机的默认值，换机器就改这里。
+- insert:
+    - id: dsh-plugin-score-smith
+      name: 'dsh-plugin-score-smith'
+      config:
+        # 制谱内核用纯英文路径的 venv（verovio 的字体资源读不了中文路径）
+        pythonPath: 'C:\dsh-tools\score-venv\Scripts\python.exe'
+        workRoot: 'D:\dsh 大肥鱼\scores'
+        baseDir: 'D:\dsh 大肥鱼'
+        # 分轨复用 dsh-plugin-stems 的内核（它装了 torch/cuda 和 demucs）
+        separatorPython: 'D:\dsh 大肥鱼\voice\tts\venv\Scripts\python.exe'
+        separatorWorker: 'D:\dsh 大肥鱼\plugins\dsh-plugin-stems\py\stems_worker.py'
+        separatorRepo: 'D:\dsh 大肥鱼\voice\demucs-repo'
+        separatorTorchHome: 'D:\dsh 大肥鱼\voice\cache'
+        device: auto
+        model: htdemucs_6s
+        grid: 1/16

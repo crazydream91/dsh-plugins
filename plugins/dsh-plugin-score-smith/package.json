@@ -1,0 +1,30 @@
+{
+  "name": "dsh-plugin-score-smith",
+  "version": "0.1.0",
+  "description": "制谱师：听音频自动分轨、识别音高音符，生成可自由编辑的曲谱（score.json / MusicXML / MIDI / PNG）",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "py",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "keywords": [
+    "dsh-plugin",
+    "audio",
+    "music",
+    "transcription",
+    "score",
+    "musicxml"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "engines": {
+      "dsh": ">=0.2.0-rc.2"
+    }
+  }
+}

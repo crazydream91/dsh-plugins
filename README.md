@@ -9,10 +9,13 @@
 | 目录 | 是什么 | 技术点 |
 |---|---|---|
 | `plugins/dsh-plugin-stems` | **音轨分离插件**：把歌曲/视频拆成鼓、贝斯、人声、其他 | DSH 插件协议、`ctx.tools.register`、demucs 子进程、任务队列 |
+| `plugins/dsh-plugin-score-smith` | **听音制谱**：分轨 → 识音 → 可编辑曲谱（五线谱/简谱/六线谱/鼓谱） | 音高识别、量化、乐理库、verovio 排版 |
 | `plugins/dsh-plugin-hello` | 最小可运行插件模板 | 插件启动契约、`inject`、patch 注入 |
 | `qq-bridge` | **QQ ↔ DSH 桥接**：在 QQ 里和被接入的助手聊天 | OneBot v11、零依赖 WebSocket 实现、断线自愈、多模态收发 |
 | `voice` | **本地语音克隆流水线** | F5-TTS 微调、素材切片筛选、ASR 校验、后期链 |
 | `gen` | 本地出图脚本 | SDXL / diffusers、显存不足降级、分块放大 |
+
+版本与更新记录见 [`CHANGELOG.md`](./CHANGELOG.md)。
 
 ## 为什么值得看
 
