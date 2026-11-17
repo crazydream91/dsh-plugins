@@ -69,19 +69,50 @@ def copy_assets(project: Path, dest: Path) -> list[str]:
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, target)
             copied.append(str(rel).replace("\\", "/"))
+    # 把第一个「自包含简谱分享页」提升到根目录，链接更短：scores/<slug>/jianpu.html
+    shares = sorted(p for p in dest.glob("parts/*/*.html") if "share" in p.name)
+    if shares:
+        shutil.copy2(shares[0], dest / "jianpu.html")
+        copied.append("jianpu.html")
     return copied
 
 
-def png_data_uri(path: Path) -> str:
-    return "data:image/png;base64," + base64.b64encode(path.read_bytes()).decode()
+def preview_tag(dest: Path, title: str) -> str:
+    """预览大图不内嵌（7494px 高的 PNG 会让页面到 900 KB）：压一张宽 1100 的 JPG 用普通 img 引用。"""
+    src = dest / "preview.png"
+    if not src.is_file():
+        return '<p class="warn">（这份工程没有 preview.png）</p>'
+    small = dest / "preview-small.jpg"
+    used = "preview.png"
+    try:
+        from PIL import Image
 
+        im = Image.open(src).convert("RGB")
+        w = 1100
+        if im.width > w:
+            im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+        im.save(small, quality=82, optimize=True, progressive=True)
+        used = "preview-small.jpg"
+    except Exception:
+        pass
+    alt = html.escape(title) + " 五线谱预览"
+    return (
+        f'<a href="preview.png" target="_blank" rel="noopener">'
+        f'<img class="sheet" src="{used}" alt="{alt}" loading="lazy"></a>'
+        f'<p class="hint">点图看原图（{"" if used == "preview.png" else "缩略图已压缩"}）。</p>'
+    )
 
 def build_page(dest: Path, meta: dict, files: list[str]) -> None:
-    preview = dest / "preview.png"
-    img_tag = (
-        f'<img class="sheet" src="{png_data_uri(preview)}" alt="{html.escape(meta["title"])} 曲谱预览">'
-        if preview.is_file()
-        else '<p class="warn">（这份工程没有 preview.png）</p>'
+    img_tag = preview_tag(dest, meta["title"])
+    has_jianpu = (dest / "jianpu.html").is_file()
+    jianpu_block = (
+        f"""  <h2>可播放简谱</h2>
+  <p class="hint">点开是自包含的交互式简谱：每个音符可点、播放时有高亮跟谱；这个文件单独发出去也能用。</p>
+  <p><a class="cta" href="jianpu.html" target="_blank" rel="noopener">🎵 打开交互式简谱（含播放）</a></p>
+  <iframe class="jianpu-frame" src="jianpu.html" loading="lazy"
+          title="简谱预览" scrolling="no"></iframe>"""
+        if has_jianpu
+        else ""
     )
 
     downloads = []
@@ -129,6 +160,13 @@ def build_page(dest: Path, meta: dict, files: list[str]) -> None:
   h2 {{ font-size:16px; margin:26px 0 8px; }}
   ul {{ margin:0; padding-left:18px; }}
   .warn {{ color:#b45309; }}
+  .hint {{ color:var(--grey); font-size:13.5px; margin:0 0 10px; }}
+  .cta {{ display:inline-block; background:#2563eb; color:#fff; text-decoration:none;
+          border-radius:10px; padding:11px 20px; font-size:15px; font-weight:600;
+          box-shadow:0 2px 8px rgba(37,99,235,.28); }}
+  .cta:hover {{ background:#1d4ed8; }}
+  .jianpu-frame {{ width:100%; height:640px; border:1px solid var(--line); border-radius:12px;
+                   background:#fff; margin-top:14px; box-shadow:0 2px 10px rgba(15,23,42,.06); }}
   footer {{ margin-top:32px; font-size:13px; color:var(--grey); }}
 </style>
 </head>
@@ -138,6 +176,8 @@ def build_page(dest: Path, meta: dict, files: list[str]) -> None:
   <h1>{html.escape(meta["title"])}</h1>
   <p class="meta">{html.escape(meta_bits)}{"　·　" if meta_bits else ""}音符轨：{html.escape(tracks or "—")}<br>
     用 <b>制谱师 dsh-plugin-score-smith</b> 生成{("　·　" + html.escape(meta["createdAt"])) if meta.get("createdAt") else ""}</p>
+{jianpu_block}
+  <h2>五线谱预览</h2>
   {img_tag}
   <h2>下载</h2>
   <p>{"".join(downloads) or '<span class="warn">无</span>'}</p>
