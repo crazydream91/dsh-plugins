@@ -66,6 +66,27 @@
                           top: 52%; border-top: 1.3px solid #666; transform: rotate(-16deg); }
  .note.grace .ly { min-height: 0; }
  #pAudio { display: none; }
+ /* --- 窄屏自适应：小节按屏宽等比拉伸（音符 left 是百分比，谱线/连线跟着走） --- */
+ @media (max-width: 900px) {
+   .wrap { padding: 14px 12px 0; }
+   h1 { font-size: 20px; }
+   #pl { padding: 8px 12px; gap: 8px; font-size: 12px; }
+   #pl button { padding: 5px 10px; }
+   #pl input[type=range] { width: 72px; }
+   .bar { display: flex; }
+   .m { width: auto !important; flex: 1 1 0; min-width: 0; }
+   .dg { font-size: 22px; }
+ }
+ @media (max-width: 560px) {
+   .wrap { padding: 10px 8px 0; }
+   .m { height: 96px; }
+   .dg { font-size: 19px; }
+   .ly { font-size: 11px; }
+   .note { padding: 0 1px; }
+   .keysig { gap: 12px; }
+   .keysig .k, .keysig .t { font-size: 18px; }
+ }
+
 </style></head><body>
 <div id="pl"><button id="pPlay" class="primary">▶ 播放</button><button id="pStop">⏹ 停止</button><button id="pTest">🔊 试音</button><span id="pos">0:00 / 0:00</span><span>速度 <input id="pSpeed" type="range" min="0.5" max="1.5" step="0.05" value="1"> <b id="pSpeedV">1.00×</b></span><span>音量 <input id="pVol" type="range" min="0" max="1" step="0.05" value="0.85"></span><label><input id="pClick" type="checkbox"> 节拍器</label><label><input id="pFollow" type="checkbox" checked> 跟着滚</label><span id="warn"></span><audio id="pAudio" src="play.mp3" preload="auto"></audio><input id="seek" type="range" min="0" max="1000" value="0"></div>
 <div class="wrap">
